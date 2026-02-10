@@ -47,6 +47,7 @@ pipeline {
                 echo "Password: ${params.PASSWORD}"
                 echo "echo Webhook Trigger Test"
                 echo "Webhook Trigger AGAIN"
+                error 'some failure'
             }
         }
     }
