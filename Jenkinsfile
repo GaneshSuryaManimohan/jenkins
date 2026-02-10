@@ -50,4 +50,15 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            echo 'I will always say hello'
+        }
+        success {
+            echo 'Shows Only upon success'
+        }
+        failure {
+            echo 'shows upon failure'
+        }
+    }
 }
