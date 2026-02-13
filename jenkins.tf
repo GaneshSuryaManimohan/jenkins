@@ -10,6 +10,46 @@ provider "aws" {
   region = "us-east-1"
 }
 
+#############################################
+# IAM Role for Jenkins EC2
+#############################################
+
+resource "aws_iam_role" "jenkins_role" {
+  name = "jenkins-terraform-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+#############################################
+# Attach AdministratorAccess (Practice Only)
+#############################################
+
+resource "aws_iam_role_policy_attachment" "jenkins_admin_attach" {
+  role       = aws_iam_role.jenkins_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+}
+
+#############################################
+# Instance Profile (Required for EC2)
+#############################################
+
+resource "aws_iam_instance_profile" "jenkins_profile" {
+  name = "jenkins-instance-profile"
+  role = aws_iam_role.jenkins_role.name
+}
+
+
 resource "aws_instance" "jenkins" {
   ami                    = "ami-0220d79f3f480ecf5"
   instance_type          = "t3.small"
@@ -27,6 +67,7 @@ resource "aws_instance" "jenkins-agent" {
   vpc_security_group_ids = ["sg-0bbdd2b154434fbfd"]
   subnet_id              = "subnet-00d8b90d93d5ad88f"
   user_data              = file("agent.sh")
+  iam_instance_profile = aws_iam_instance_profile.jenkins_profile.name
   tags = {
     Name = "jenkins-agent"
   }

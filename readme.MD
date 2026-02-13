@@ -4,4 +4,4 @@
 
 *  **Pipeline: Stage View** --> a user interface feature that provides a visual, real-time representation of the different stages in a Jenkins Pipeline
 
-* 
+*  **Pipeline Utility Steps** --> 
