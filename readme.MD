@@ -31,6 +31,7 @@
 * sudo pvresize /dev/nvme0n1p4  --> Resize the Physical Volume
 
 * sudo lvextend -L +20G /dev/RootVG/homeVol --> Extend /home logically
-  sudo xfs_growfs /home
+
+* sudo xfs_growfs /home
 
 * df -h /home
