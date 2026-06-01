@@ -155,16 +155,16 @@ resource "aws_instance" "jenkins-agent" {
   }
 }
 
-resource "aws_instance" "nexus" {
-  ami         = var.ami_id
-  instance_type = "t2.medium"
-  user_data = file("nexus-install.sh")
-  subnet_id = "subnet-00d8b90d93d5ad88f"
-  vpc_security_group_ids = ["sg-0bbdd2b154434fbfd"]
-  tags = {
-    Name = "Nexus-Server"
-  }
-}
+# resource "aws_instance" "nexus" {
+#   ami         = var.ami_id
+#   instance_type = "t2.medium"
+#   user_data = file("nexus-install.sh")
+#   subnet_id = "subnet-00d8b90d93d5ad88f"
+#   vpc_security_group_ids = ["sg-0bbdd2b154434fbfd"]
+#   tags = {
+#     Name = "Nexus-Server"
+#   }
+# }
 
 
 resource "aws_route53_record" "jenkins-server" {
@@ -184,10 +184,10 @@ resource "aws_route53_record" "jenkins-agent" {
   records = [aws_instance.jenkins-agent.private_ip]
 }
 
-resource "aws_route53_record" "nexus" {
-  zone_id = data.aws_route53_zone.existing.zone_id
-  name    = "nexus.${var.zone_name}"
-  type    = "A"
-  ttl     = 300
-  records = [aws_instance.nexus.public_ip]
-}
+# resource "aws_route53_record" "nexus" {
+#   zone_id = data.aws_route53_zone.existing.zone_id
+#   name    = "nexus.${var.zone_name}"
+#   type    = "A"
+#   ttl     = 300
+#   records = [aws_instance.nexus.public_ip]
+# }
